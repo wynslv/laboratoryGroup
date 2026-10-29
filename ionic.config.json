@@ -1,0 +1,7 @@
+{
+  "name": "laboratoryGroup",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

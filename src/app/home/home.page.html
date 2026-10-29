@@ -1,0 +1,248 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{ secondTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="filter-bar">
+    <select (change)="setFilter('gender', $event)">
+      <option value="All" [selected]="genderFilter === 'All'">All genders</option>
+      <option value="Female" [selected]="genderFilter === 'Female'">Female</option>
+      <option value="Male" [selected]="genderFilter === 'Male'">Male</option>
+    </select>
+
+    <select (change)="setFilter('year', $event)">
+      <option value="All" [selected]="yearFilter === 'All'">All years</option>
+      <option *ngFor="let y of years" [value]="y" [selected]="yearFilter === '' + y">Year {{ y }}</option>
+    </select>
+
+    <select (change)="setFilter('course', $event)">
+      <option value="All" [selected]="courseFilter === 'All'">All courses</option>
+      <option *ngFor="let c of courses" [value]="c" [selected]="courseFilter === c">{{ c }}</option>
+    </select>
+
+    <ion-button size="small" fill="outline" (click)="resetFilters()">Reset</ion-button>
+  </div>
+
+  <p class="result-count">Showing {{ visibleCount }} of {{ students.length }} students</p>
+ 
+  <ion-accordion-group>
+
+    <ion-accordion value="first" *ngIf="showStudent(0)">
+      <ion-item slot="header" [color]="selectedIndex === 0 ? studentColor : 'light'" (click)="changecolor('primary', 0)">
+        <ion-label *ngFor="let s of students.slice(0, 1)">{{ s.name }}</ion-label>
+      </ion-item>
+      <div class="ion-padding student-content" slot="content">
+        <ion-img [src]="students[0].photo" [alt]="students[0].name" class="student-photo"></ion-img>
+        <div class="student-info">
+          <div>Name: {{ students[0].name }}</div>
+          <div>Address: {{ students[0].address }}</div>
+          <div>Gender: {{ students[0].gender }}</div>
+          <div>Course: {{ students[0].course }}</div>
+          <div>Year Level: {{ students[0].year }}</div>
+
+          <div *ngIf="editingIndex === 0; else viewMode0">
+            <input placeholder="Name" [value]="students[0].name" (input)="updateField(0, 'name', $event)">
+            <input placeholder="Address" [value]="students[0].address" (input)="updateField(0, 'address', $event)">
+            <input placeholder="Gender" [value]="students[0].gender" (input)="updateField(0, 'gender', $event)">
+            <input placeholder="Course" [value]="students[0].course" (input)="updateField(0, 'course', $event)">
+            <input type="number" placeholder="Year" [value]="students[0].year" (input)="updateField(0, 'year', $event)">
+            <ion-button size="small" (click)="toggleEdit(0)">Done</ion-button>
+          </div>
+          <ng-template #viewMode0>
+            <ion-button size="small" (click)="toggleEdit(0)">Edit</ion-button>
+          </ng-template>
+        </div>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="second" *ngIf="showStudent(1)">
+      <ion-item slot="header" [color]="selectedIndex === 1 ? studentColor : 'light'" (click)="changecolor('danger', 1)">
+        <ion-label *ngFor="let s of students.slice(1, 2)">{{ s.name }}</ion-label>
+      </ion-item>
+      <div class="ion-padding student-content" slot="content">
+        <ion-img [src]="students[1].photo" [alt]="students[1].name" class="student-photo"></ion-img>
+        <div class="student-info">
+          <div>Address: {{ students[1].address }}</div>
+          <div>Gender: {{ students[1].gender }}</div>
+          <div>Course: {{ students[1].course }}</div>
+          <div>Year Level: {{ students[1].year }}</div>
+
+          <div *ngIf="editingIndex === 1; else viewMode1">
+            <input placeholder="Name" [value]="students[1].name" (input)="updateField(1, 'name', $event)">
+            <input placeholder="Address" [value]="students[1].address" (input)="updateField(1, 'address', $event)">
+            <input placeholder="Gender" [value]="students[1].gender" (input)="updateField(1, 'gender', $event)">
+            <input placeholder="Course" [value]="students[1].course" (input)="updateField(1, 'course', $event)">
+            <input type="number" placeholder="Year" [value]="students[1].year" (input)="updateField(1, 'year', $event)">
+            <ion-button size="small" (click)="toggleEdit(1)">Done</ion-button>
+          </div>
+          <ng-template #viewMode1>
+            <ion-button size="small" (click)="toggleEdit(1)">Edit</ion-button>
+          </ng-template>
+        </div>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="third" *ngIf="showStudent(2)">
+      <ion-item slot="header" [color]="selectedIndex === 2 ? studentColor : 'light'" (click)="changecolor('success', 2)">
+        <ion-label *ngFor="let s of students.slice(2, 3)">{{ s.name }}</ion-label>
+      </ion-item>
+      <div class="ion-padding student-content" slot="content">
+        <ion-img [src]="students[2].photo" [alt]="students[2].name" class="student-photo"></ion-img>
+        <div class="student-info">
+          <div>Gender: {{ students[2].gender }}</div>
+          <div>Course: {{ students[2].course }}</div>
+          <div>Year Level: {{ students[2].year }}</div>
+
+          <div *ngIf="editingIndex === 2; else viewMode2">
+            <input placeholder="Name" [value]="students[2].name" (input)="updateField(2, 'name', $event)">
+            <input placeholder="Address" [value]="students[2].address" (input)="updateField(2, 'address', $event)">
+            <input placeholder="Gender" [value]="students[2].gender" (input)="updateField(2, 'gender', $event)">
+            <input placeholder="Course" [value]="students[2].course" (input)="updateField(2, 'course', $event)">
+            <input type="number" placeholder="Year" [value]="students[2].year" (input)="updateField(2, 'year', $event)">
+            <ion-button size="small" (click)="toggleEdit(2)">Done</ion-button>
+          </div>
+          <ng-template #viewMode2>
+            <ion-button size="small" (click)="toggleEdit(2)">Edit</ion-button>
+          </ng-template>
+        </div>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="fourth" *ngIf="showStudent(3)">
+      <ion-item slot="header" [color]="selectedIndex === 3 ? studentColor : 'light'" (click)="changecolor('warning', 3)">
+        <ion-label *ngFor="let s of students.slice(3, 4)">{{ s.name }}</ion-label>
+      </ion-item>
+      <div class="ion-padding student-content" slot="content">
+        <ion-img [src]="students[3].photo" [alt]="students[3].name" class="student-photo"></ion-img>
+        <div class="student-info">
+          <div>Gender: {{ students[3].gender }}</div>
+          <div>Course: {{ students[3].course }}</div>
+          <div>Year Level: {{ students[3].year }}</div>
+
+          <div *ngIf="editingIndex === 3; else viewMode3">
+            <input placeholder="Name" [value]="students[3].name" (input)="updateField(3, 'name', $event)">
+            <input placeholder="Address" [value]="students[3].address" (input)="updateField(3, 'address', $event)">
+            <input placeholder="Gender" [value]="students[3].gender" (input)="updateField(3, 'gender', $event)">
+            <input placeholder="Course" [value]="students[3].course" (input)="updateField(3, 'course', $event)">
+            <input type="number" placeholder="Year" [value]="students[3].year" (input)="updateField(3, 'year', $event)">
+            <ion-button size="small" (click)="toggleEdit(3)">Done</ion-button>
+          </div>
+          <ng-template #viewMode3>
+            <ion-button size="small" (click)="toggleEdit(3)">Edit</ion-button>
+          </ng-template>
+        </div>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="fifth" *ngIf="showStudent(4)">
+      <ion-item slot="header" [color]="selectedIndex === 4 ? studentColor : 'light'" (click)="changecolor('tertiary', 4)">
+        <ion-label *ngFor="let s of students.slice(4, 5)">{{ s.name }}</ion-label>
+      </ion-item>
+      <div class="ion-padding student-content" slot="content">
+        <ion-img [src]="students[4].photo" [alt]="students[4].name" class="student-photo"></ion-img>
+        <div class="student-info">
+          <div>Gender: {{ students[4].gender }}</div>
+          <div>Course: {{ students[4].course }}</div>
+          <div>Year Level: {{ students[4].year }}</div>
+
+          <div *ngIf="editingIndex === 4; else viewMode4">
+            <input placeholder="Name" [value]="students[4].name" (input)="updateField(4, 'name', $event)">
+            <input placeholder="Address" [value]="students[4].address" (input)="updateField(4, 'address', $event)">
+            <input placeholder="Gender" [value]="students[4].gender" (input)="updateField(4, 'gender', $event)">
+            <input placeholder="Course" [value]="students[4].course" (input)="updateField(4, 'course', $event)">
+            <input type="number" placeholder="Year" [value]="students[4].year" (input)="updateField(4, 'year', $event)">
+            <ion-button size="small" (click)="toggleEdit(4)">Done</ion-button>
+          </div>
+          <ng-template #viewMode4>
+            <ion-button size="small" (click)="toggleEdit(4)">Edit</ion-button>
+          </ng-template>
+        </div>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="sixth" *ngIf="showStudent(5)">
+      <ion-item slot="header" [color]="selectedIndex === 5 ? studentColor : 'light'" (click)="changecolor('secondary', 5)">
+        <ion-label *ngFor="let s of students.slice(5, 6)">{{ s.name }}</ion-label>
+      </ion-item>
+      <div class="ion-padding student-content" slot="content">
+        <ion-img [src]="students[5].photo" [alt]="students[5].name" class="student-photo"></ion-img>
+        <div class="student-info">
+          <div>Gender: {{ students[5].gender }}</div>
+          <div>Course: {{ students[5].course }}</div>
+          <div>Year Level: {{ students[5].year }}</div>
+
+          <div *ngIf="editingIndex === 5; else viewMode5">
+            <input placeholder="Name" [value]="students[5].name" (input)="updateField(5, 'name', $event)">
+            <input placeholder="Address" [value]="students[5].address" (input)="updateField(5, 'address', $event)">
+            <input placeholder="Gender" [value]="students[5].gender" (input)="updateField(5, 'gender', $event)">
+            <input placeholder="Course" [value]="students[5].course" (input)="updateField(5, 'course', $event)">
+            <input type="number" placeholder="Year" [value]="students[5].year" (input)="updateField(5, 'year', $event)">
+            <ion-button size="small" (click)="toggleEdit(5)">Done</ion-button>
+          </div>
+          <ng-template #viewMode5>
+            <ion-button size="small" (click)="toggleEdit(5)">Edit</ion-button>
+          </ng-template>
+        </div>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="seventh" *ngIf="showStudent(6)">
+      <ion-item slot="header" [color]="selectedIndex === 6 ? studentColor : 'light'" (click)="changecolor('medium', 6)">
+        <ion-label *ngFor="let s of students.slice(6, 7)">{{ s.name }}</ion-label>
+      </ion-item>
+      <div class="ion-padding student-content" slot="content">
+        <ion-img [src]="students[6].photo" [alt]="students[6].name" class="student-photo"></ion-img>
+        <div class="student-info">
+          <div>Gender: {{ students[6].gender }}</div>
+          <div>Course: {{ students[6].course }}</div>
+          <div>Year Level: {{ students[6].year }}</div>
+
+          <div *ngIf="editingIndex === 6; else viewMode6">
+            <input placeholder="Name" [value]="students[6].name" (input)="updateField(6, 'name', $event)">
+            <input placeholder="Address" [value]="students[6].address" (input)="updateField(6, 'address', $event)">
+            <input placeholder="Gender" [value]="students[6].gender" (input)="updateField(6, 'gender', $event)">
+            <input placeholder="Course" [value]="students[6].course" (input)="updateField(6, 'course', $event)">
+            <input type="number" placeholder="Year" [value]="students[6].year" (input)="updateField(6, 'year', $event)">
+            <ion-button size="small" (click)="toggleEdit(6)">Done</ion-button>
+          </div>
+          <ng-template #viewMode6>
+            <ion-button size="small" (click)="toggleEdit(6)">Edit</ion-button>
+          </ng-template>
+        </div>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="eighth" *ngIf="showStudent(7)">
+      <ion-item slot="header" [color]="selectedIndex === 7 ? studentColor : 'light'" (click)="changecolor('dark', 7)">
+        <ion-label *ngFor="let s of students.slice(7, 8)">{{ s.name }}</ion-label>
+      </ion-item>
+      <div class="ion-padding student-content" slot="content">
+        <ion-img [src]="students[7].photo" [alt]="students[7].name" class="student-photo"></ion-img>
+        <div class="student-info">
+          <div>Gender: {{ students[7].gender }}</div>
+          <div>Course: {{ students[7].course }}</div>
+          <div>Year Level: {{ students[7].year }}</div>
+
+          <!-- EDIT MODE (ngIf / else) -->
+          <div *ngIf="editingIndex === 7; else viewMode7">
+            <input placeholder="Name" [value]="students[7].name" (input)="updateField(7, 'name', $event)">
+            <input placeholder="Address" [value]="students[7].address" (input)="updateField(7, 'address', $event)">
+            <input placeholder="Gender" [value]="students[7].gender" (input)="updateField(7, 'gender', $event)">
+            <input placeholder="Course" [value]="students[7].course" (input)="updateField(7, 'course', $event)">
+            <input type="number" placeholder="Year" [value]="students[7].year" (input)="updateField(7, 'year', $event)">
+            <ion-button size="small" (click)="toggleEdit(7)">Done</ion-button>
+          </div>
+          <ng-template #viewMode7>
+            <ion-button size="small" (click)="toggleEdit(7)">Edit</ion-button>
+          </ng-template>
+        </div>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <div *ngIf="visibleCount === 0" class="empty-state">
+    No students match these filters.
+  </div>
+</ion-content>
